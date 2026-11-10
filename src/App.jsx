@@ -1,7 +1,10 @@
 import { useMemo } from "react";
 import { population, TARGET, TARGET_LABEL } from "./data.js";
-import { makeRng, srs, sampleMean, trueMean } from "./sampling.js";
+import { groupCounts, makeRng, srs, sampleMean, trueMean } from "./sampling.js";
 import TimelineChart from "./TimelineChart.jsx";
+import WeekdayCounts from "./WeekdayCounts.jsx";
+
+const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 
 // TEMPORARY (stage 2): one fixed-seed simple random sample to test the display.
 const TEMP_SEED = 12345;
@@ -12,6 +15,11 @@ export default function App() {
   const truth = useMemo(() => trueMean(population, TARGET), []);
   const sampleIdx = useMemo(() => srs(N, TEMP_N, makeRng(TEMP_SEED)), [N]);
   const estimate = useMemo(() => sampleMean(population, sampleIdx, TARGET), [sampleIdx]);
+  const popDayCounts = useMemo(() => groupCounts(population, "weekday", WEEKDAYS), []);
+  const sampleDayCounts = useMemo(
+    () => groupCounts(population, "weekday", WEEKDAYS, sampleIdx),
+    [sampleIdx]
+  );
 
   return (
     <main>
@@ -61,6 +69,14 @@ export default function App() {
           <p>Mean wait of this one sample of n = {TEMP_N} (seed {TEMP_SEED}).</p>
         </div>
       </section>
+
+      <WeekdayCounts
+        weekdays={WEEKDAYS}
+        popCounts={popDayCounts}
+        sampleCounts={sampleDayCounts}
+        N={N}
+        n={TEMP_N}
+      />
     </main>
   );
 }

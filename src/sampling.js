@@ -37,6 +37,19 @@ export function srs(N, n, rng) {
   return idx.slice(0, n).sort((a, b) => a - b);
 }
 
+// Count rows per group, in the order the groups are listed in `groups`.
+// With `indices`, counts only those rows (a sample); without, counts all rows.
+export function groupCounts(rows, key, groups, indices) {
+  const counts = Object.fromEntries(groups.map((g) => [g, 0]));
+  const list = indices ?? rows.map((_, i) => i);
+  for (const i of list) {
+    const g = rows[i][key];
+    if (!(g in counts)) throw new Error(`Unknown ${key} value "${g}"`);
+    counts[g]++;
+  }
+  return counts;
+}
+
 // Sample mean of the target over the selected row indices (SRS estimate).
 export function sampleMean(rows, indices, key) {
   if (indices.length === 0) throw new Error("Sample is empty");
