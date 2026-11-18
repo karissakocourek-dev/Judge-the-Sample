@@ -27,7 +27,7 @@ I calculated the mean by having my AI agent give me this code: "node -e 'const f
 For each stage: the option I chose, why, and what it is meant to help a user learn.
 
 - Stage 2, visualization (include one visual feature meant to reveal a sampling problem): I chose a timeline scatterplot because it shows the different appointment times in a simple way that is easy for a learner to interpret. It lets the reader see how wait times vary throughout the day and notice a trend. The visual feature meant to reveal a sampling problem is a count by weekday of the sampled rows. If the sampled rows are clumped on one or two weekdays instead of being spread roughly evenly across the five, the reader can see that the sample is not representative of the population. It teaches that a sample can look fine on average but still miss parts of the population, so the sample should be checked against the population before it is trusted.
-- Stage 3, sampling interactions and stratification column:
+- Stage 3, sampling interactions and stratification column: I choose the "slot" column because there are 20 appointment slots per day.  Each slot has 500 appointments, so n = 100 gives about 5 sampled rows per slot.  Stratified sampling within the "slot" column allows for every appointment time to be represented.  A morning appointment may face different challenges compared to an afternoon appointment.
 - Stage 4, presentation of the method comparison and sample-size experiments:
 - Stage 5, challenge controls and my alternative method or correction:
 
