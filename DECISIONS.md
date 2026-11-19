@@ -84,8 +84,12 @@ Hypothesis, written before I consult my agent: Shuffling the row order will not 
 
 After I test it:
 
-- Test settings (conditions, methods, alternative method or correction, n, seeds); results are in the table above:
-- (c) Challenge interpretation: did the evidence support my hypothesis? Bias versus variability, other explanations, what the alternative or correction showed, and any dated revision (keep the original above):
+- Test settings (conditions, methods, alternative method or correction, n, seeds); results are in the table above: 
+Condition tested: row order only, using a shuffled copy of the clinic data with the wait times and the 10,000 appointments unchanged, with shuffle seeds 1, 2, and 3. 
+Method challenged: simple random sampling, without replacement. 
+Alternative: systematic sampling with a whole-number interval of k = 100, run as exact enumeration over all 100 starts with no seed. Sample size: n = 100 for every result. 
+Seeds and repetitions: experiment seeds 12345 and 7, with 100 repetitions and, for one run, 1,000 repetitions on the simple random results. The results in the table above are from experiment seed 12345, shuffle seed 1, and 100 repetitions.
+- (c) Challenge interpretation: did the evidence support my hypothesis? Bias versus variability, other explanations, what the alternative or correction showed, and any dated revision (keep the original above): The evidence supported my hypothesis. For simple random, the true mean stayed at 22.684 after the shuffle. The modified biases were small and changed sign across runs, from −0.130 to 0.166, and the baseline showed the same pattern, so I treat them as noise. The modified SDs ranged from 1.331 to 1.555, which overlaps the baseline range of 1.312 to 1.451. For systematic, the bias was 0.000 in every run because exact enumeration uses each start once, but the SD fell from 6.957 at baseline to between 1.304 and 1.619 after shuffling. My explanation is that the original interval of 100 matches the 100 appointments in a week, so every start picked rows from one weekday and slot, and shuffling broke that alignment. Limits: I tested only three shuffle seeds, two experiment seeds, and 100 and 1,000 repetitions, so small differences could be hidden by noise, and I can’t say systematic will always match simple random. Systematic, the alternative, showed that its reliability depends on row order while simple random’s did not. I made no revision to my hypothesis.
 
 ## 6. AI use
 
