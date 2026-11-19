@@ -51,11 +51,11 @@ value for modified rows). Keep each result in its own row: never pool estimates.
 
 | Experiment | Population or condition | Method | Settings | Seed (or exact) | n | Repetitions or starts | Type | True mean | Bias | SD | RMSE |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Methods at n = 100 | baseline | Simple random | | | 100 | | | | | | |
-| Methods at n = 100 | baseline | Systematic | | | 100 | | | | | | |
-| Methods at n = 100 | baseline | Stratified | | | 100 | | | | | | |
-| Sample size | baseline | Simple random | | | 1 | | | | | | |
-| Sample size | baseline | Simple random | | | 10 | | | | | | |
+| Methods at n = 100 | baseline | Simple random | without replacement | 12345 | 100 | 100 repetitions | Monte Carlo | 22.684 | -0.030 | 1.450 | 1.450 |
+| Methods at n = 100 | baseline | Systematic | random start, file order, whole-number interval k = 100 | exact | 100 | 100 starts | exact | 22.684 | 0.000 | 6.957 | 6.957 |
+| Methods at n = 100 | baseline | Stratified | by slot, 20 strata, proportional allocation, seeded ties | 12345 | 100 | 100 repetitions | Monte Carlo | 22.684 | -0.210 | 1.334 | 1.351 |
+| Sample size | baseline | Simple random | without replacement | 12345 | 1 | 100 repetitions | Monte Carlo | 22.684 | 2.226 | 12.820 | 13.012 |
+| Sample size | baseline | Simple random | without replacement | 12345 | 10 | 100 repetitions | Monte Carlo | 22.684 | -0.035 | 4.353 | 4.353 |
 | Challenge | baseline | (method I challenged) | | | | | | | | | |
 | Challenge | modified | (method I challenged) | | | | | | | | | |
 | Challenge | baseline | (alternative or correction) | | | | | | | | | |
@@ -67,8 +67,8 @@ rows use the same n; a challenge baseline row may repeat a matching stage 4 resu
 
 ## 4. Findings (in my own words, using my own numbers)
 
-- (a) Method comparison: the three sampling methods compared at n = 100 (bias versus variability, and for which population):
-- (b) Sample-size finding: how sample size affects the spread of estimates and the estimation error, and what a larger sample cannot fix:
+- (a) Method comparison: the three sampling methods compared at n = 100 (bias versus variability, and for which population): On the baseline clinic population, at n = 100, judged by RMSE, the stratified method did best with an RMSE of 1.351, closely followed by simple random at 1.450, while systematic did far worse at 6.957. That gap between the top two is small, and with only 100 repetitions I can’t say it is a real difference. Systematic had a bias of 0.000 because exact enumeration uses every possible start once, so every row is equally likely to be selected. Its error is entirely spread, with an SD of 6.957. The reason is that the interval of 100 matches the 100 appointments in a week, so each start picks rows that all fall on the same weekday and slot, and different starts land on very different weekday and slot combinations. Stratified had the largest bias of the three at −0.210, but that bias changed sign and shrank when I used a different seed with 1,000 repetitions, so I treat it as noise and not as a real bias.
+- (b) Sample-size finding: how sample size affects the spread of estimates and the estimation error, and what a larger sample cannot fix: For simple random sampling, the spread of the estimates fell steadily as n grew, from an SD of 12.820 at n = 1 to 4.353 at n = 10 and 1.450 at n = 100. The RMSE followed the SD, since the bias was small in every case. So a larger sample gives estimates that are closer to the true mean on average, but not for every individual sample, because any single sample can still land far from the truth. A larger sample also cannot fix a problem in how the sample is chosen. The systematic method, for example, lines up with the weekly pattern of the file, and making the sample bigger doesn’t change that. Also, every result describes only the 10,000 appointments in this file, not all clinics.
 
 ## 5. Challenge (hypothesis written independently, before consulting my agent)
 
