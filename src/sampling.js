@@ -212,6 +212,113 @@ export function stratifiedEstimate(table) {
   return table.reduce((s, t) => s + t.weight * t.mean, 0);
 }
 
+// ---------- Repeated sampling ----------
+
+export const REPETITION_CHOICES = [100, 1000];
+export const MIN_REPETITIONS = 100;
+
+// One sample of n rows drawn by `design`, and its estimate.
+// design: { kind: "srs" } | { kind: "systematic" } | { kind: "stratified", strata, keyOf }
+export function drawOnce(rows, key, design, n, rng) {
+  const N = rows.length;
+  if (design.kind === "srs") {
+    const indices = srs(N, n, rng);
+    return { indices, estimate: sampleMean(rows, indices, key) };
+  }
+  if (design.kind === "systematic") {
+    const { indices } = systematic(N, n, rng);
+    return { indices, estimate: sampleMean(rows, indices, key) };
+  }
+  if (design.kind === "stratified") {
+    const r = stratifiedSample(rows, key, design.strata, design.keyOf, n, rng);
+    return { indices: r.indices, estimate: stratifiedEstimate(r.table) };
+  }
+  throw new Error(`Unknown design "${design.kind}"`);
+}
+
+// Monte Carlo: `reps` separate samples of n rows each (each without replacement; a row may
+// appear again in a later repetition), one estimate per repetition. Seeded: one generator
+// from `seed`, used for the repetitions in order, so the same seed gives the same estimates.
+// Optional onSample(indices, rep) lets checks inspect each sample.
+export function monteCarlo(rows, key, design, n, reps, seed, onSample) {
+  if (!Number.isInteger(reps) || reps < MIN_REPETITIONS) {
+    throw new Error(`Monte Carlo needs at least ${MIN_REPETITIONS} repetitions`);
+  }
+  const rng = makeRng(seed);
+  const estimates = new Array(reps);
+  for (let r = 0; r < reps; r++) {
+    const s = drawOnce(rows, key, design, n, rng);
+    if (onSample) onSample(s.indices, r);
+    estimates[r] = s.estimate;
+  }
+  return estimates;
+}
+
+// Exact enumeration for systematic sampling with a whole-number interval:
+// one estimate for each of the k equally likely starts r = 1..k. No random draws, no seed.
+export function systematicExact(rows, key, n, onSample) {
+  const N = rows.length;
+  if (N % n !== 0) throw new Error("Exact enumeration needs N / n to be a whole number");
+  const k = N / n;
+  const estimates = new Array(k);
+  for (let r = 1; r <= k; r++) {
+    const indices = systematicFromStart(N, n, r);
+    if (onSample) onSample(indices, r);
+    estimates[r - 1] = sampleMean(rows, indices, key);
+  }
+  return estimates;
+}
+
+// Summary of a set of estimates against the true mean of the population they came from.
+// bias = mean of estimates − true mean; SD divides by the number of estimates;
+// RMSE = √(mean of (estimate − true mean)²), so RMSE² = bias² + SD².
+export function summarizeEstimates(estimates, truth) {
+  const m = estimates.length;
+  if (m === 0) throw new Error("No estimates");
+  let sum = 0;
+  for (const e of estimates) sum += e;
+  const meanEst = sum / m;
+  let ssd = 0;
+  let sse = 0;
+  for (const e of estimates) {
+    ssd += (e - meanEst) ** 2;
+    sse += (e - truth) ** 2;
+  }
+  return { count: m, meanEst, bias: meanEst - truth, sd: Math.sqrt(ssd / m), rmse: Math.sqrt(sse / m) };
+}
+
+// One repeated-sampling result with all its labels. Systematic with a whole-number interval
+// uses exact enumeration (no seed); everything else uses seeded Monte Carlo.
+export function repeatedResult(rows, key, design, n, reps, seed) {
+  const truth = trueMean(rows, key);
+  const exact = design.kind === "systematic" && rows.length % n === 0;
+  const estimates = exact
+    ? systematicExact(rows, key, n)
+    : monteCarlo(rows, key, design, n, reps, seed);
+  return {
+    type: exact ? "exact" : "Monte Carlo",
+    seed: exact ? null : seed,
+    n,
+    count: estimates.length,
+    countLabel: exact ? `${estimates.length} starts` : `${estimates.length} repetitions`,
+    truth,
+    estimates,
+    summary: summarizeEstimates(estimates, truth),
+  };
+}
+
+// Histogram counts over `bins` equal-width bins from lo to hi (hi included in the last bin).
+export function binCounts(values, lo, hi, bins) {
+  if (!(hi > lo)) throw new Error("Histogram needs hi > lo");
+  const counts = new Array(bins).fill(0);
+  const w = (hi - lo) / bins;
+  for (const v of values) {
+    if (v < lo || v > hi) throw new Error(`Value ${v} outside histogram range`);
+    counts[Math.min(bins - 1, Math.floor((v - lo) / w))]++;
+  }
+  return counts;
+}
+
 // Count rows per group, in the order the groups are listed in `groups`.
 // With `indices`, counts only those rows (a sample); without, counts all rows.
 export function groupCounts(rows, key, groups, indices) {

@@ -16,6 +16,14 @@ describe("app renders", () => {
       "whole-number interval",
       "Allocation and weights",
       "Seed",
+      "Experiment A: three methods at n = 100",
+      "Experiment B: sample size with simple random sampling",
+      "exact (no seed)",
+      "Monte Carlo",
+      "100 starts",
+      "100 repetitions",
+      "same result as Experiment A",
+      "100 repetitions usually reveal the main pattern",
     ]) {
       expect(html).toContain(text);
     }

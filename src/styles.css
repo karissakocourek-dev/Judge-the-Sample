@@ -103,6 +103,34 @@ h3 { font-size: 0.95rem; margin: 0 0 0.25rem; }
 .allocation th[scope="row"] { text-align: left; }
 .allocation tfoot td, .allocation tfoot th { font-weight: 600; }
 
+.experiments { border-top: 3px solid var(--grid); margin-top: 2.5rem; padding-top: 1rem; }
+.experiment { margin-top: 1.5rem; }
+.muted { color: var(--muted); font-size: 0.9rem; }
+.reps { border: none; display: flex; gap: 14px; padding: 0; margin: 0; }
+.reps legend { float: left; margin-right: 10px; }
+.hist { margin-top: 1rem; }
+h4 { font-size: 0.95rem; margin: 0; }
+.hist-labels { font-size: 0.85rem; color: var(--muted); margin: 0.2rem 0; }
+.hist-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.hist-svg { flex: 1 1 520px; min-width: 0; height: auto; display: block; }
+.hist-svg .grid { stroke: var(--grid); }
+.hist-svg .axis { stroke: var(--muted); }
+.hist-svg .tick { fill: var(--muted); font-size: 12px; }
+.hist-svg .axis-title { fill: var(--fg); font-size: 13px; }
+.hist-svg .bars rect { fill: var(--pop); stroke: var(--muted); stroke-width: 0.5; }
+.hist-svg .true-mean { stroke: var(--true); stroke-width: 2.5; }
+.hist-svg .estimate { stroke: var(--est); stroke-width: 2.5; stroke-dasharray: 8 5; }
+.hist-svg .line-label { font-size: 13px; font-weight: 600; paint-order: stroke; stroke: var(--bg); stroke-width: 4px; }
+.hist-svg .true-mean-label { fill: var(--true); }
+.hist-svg .estimate-label { fill: var(--est); }
+.hist-stats { margin: 0; background: var(--card); padding: 8px 12px; border-radius: 6px; min-width: 150px; }
+.hist-stats div { display: flex; justify-content: space-between; gap: 10px; }
+.hist-stats dt { color: var(--muted); }
+.hist-stats dd { margin: 0; font-weight: 600; }
+.table-wrap { overflow-x: auto; margin-top: 1rem; }
+.results-table { border-collapse: collapse; font-size: 0.85rem; }
+.results-table th, .results-table td { padding: 3px 8px; border-bottom: 1px solid var(--grid); text-align: left; vertical-align: top; }
+
 .weekday-counts { margin-top: 1.5rem; }
 .weekday-counts table { border-collapse: collapse; width: 100%; max-width: 640px; font-size: 0.95rem; }
 .weekday-counts th, .weekday-counts td { text-align: left; padding: 4px 10px 4px 0; border-bottom: 1px solid var(--grid); }

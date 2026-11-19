@@ -12,6 +12,7 @@ import {
   trueMean,
 } from "./sampling.js";
 import MethodPanel from "./MethodPanel.jsx";
+import Experiments from "./Experiments.jsx";
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 const DEFAULT_N = 100;
@@ -286,6 +287,8 @@ export default function App() {
           </details>
         )}
       </MethodPanel>
+
+      <Experiments population={population} target={TARGET} />
     </main>
   );
 }
