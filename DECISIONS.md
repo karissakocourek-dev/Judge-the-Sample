@@ -27,7 +27,16 @@ I calculated the mean by having my AI agent give me this code: "node -e 'const f
 For each stage: the option I chose, why, and what it is meant to help a user learn.
 
 - Stage 2, visualization (include one visual feature meant to reveal a sampling problem): I chose a timeline scatterplot because it shows the different appointment times in a simple way that is easy for a learner to interpret. It lets the reader see how wait times vary throughout the day and notice a trend. The visual feature meant to reveal a sampling problem is a count by weekday of the sampled rows. If the sampled rows are clumped on one or two weekdays instead of being spread roughly evenly across the five, the reader can see that the sample is not representative of the population. It teaches that a sample can look fine on average but still miss parts of the population, so the sample should be checked against the population before it is trusted.
-- Stage 3, sampling interactions and stratification column: I choose the "slot" column because there are 20 appointment slots per day.  Each slot has 500 appointments, so n = 100 gives about 5 sampled rows per slot.  Stratified sampling within the "slot" column allows for every appointment time to be represented.  A morning appointment may face different challenges compared to an afternoon appointment.
+- Stage 3, sampling interactions and stratification column: 
+Interaction approach: I chose three stacked timelines, one for each sampling method, using the same n and seed from a shared control bar. This lets the user compare all three methods at once and easily see how each one selects its rows.
+
+Stratification column: I chose slot because there are 20 appointment slots per day. Stratified sampling on slot allows every appointment time to be represented. A morning appointment may face different challenges compared to an afternoon appointment.
+
+Tie-break rule: When n is not a multiple of 20, the extra rows go to slots chosen at random using the seed. I chose this so every slot has an equal chance, and the same seed gives the same result.
+
+When n is below 20: The app merges the 20 slots into 4 groups of 5 slots (slots 1 to 5, 6 to 10, 11 to 15, and 16 to 20, with 2,500 rows each). I chose this because I want every method to run at every n, and this still allows me to test n = 10 and n = 100.
+
+When n is below 4: Stratified sampling is blocked with an explanation, and simple random and systematic still run. There are 4 groups and each needs at least one row, so n = 1, 2, and 3 can’t work. I chose to block it because making stratified work at that size would make the app harder for new users to follow.
 - Stage 4, presentation of the method comparison and sample-size experiments:
 - Stage 5, challenge controls and my alternative method or correction:
 
