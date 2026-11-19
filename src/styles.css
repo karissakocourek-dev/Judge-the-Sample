@@ -82,6 +82,27 @@ h2 { font-size: 1rem; margin: 0 0 0.25rem; }
 .results p { margin: 0; }
 .results .big { font-size: 1.6rem; font-weight: 700; }
 
+h3 { font-size: 0.95rem; margin: 0 0 0.25rem; }
+
+.controls { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; margin: 1rem 0; }
+.controls input { width: 9em; font: inherit; padding: 2px 6px; }
+.controls .settings-line { flex-basis: 100%; margin: 0; }
+.error { flex-basis: 100%; margin: 0; color: var(--sample); font-weight: 600; }
+
+.note { background: var(--card); padding: 10px 14px; border-radius: 6px; margin-bottom: 1rem; }
+.note p { margin: 0.4rem 0; }
+
+.method-panel { border-top: 2px solid var(--grid); padding-top: 1rem; margin-top: 1.5rem; }
+.method-panel .rule p { margin: 0.3rem 0; }
+.blocked { background: var(--banner-bg); color: var(--banner-fg); padding: 10px 14px; border-radius: 6px; }
+
+.allocation { margin-top: 1rem; overflow-x: auto; }
+.allocation summary { cursor: pointer; font-weight: 600; }
+.allocation table { border-collapse: collapse; font-size: 0.9rem; margin-top: 0.5rem; }
+.allocation th, .allocation td { text-align: right; padding: 3px 10px; border-bottom: 1px solid var(--grid); }
+.allocation th[scope="row"] { text-align: left; }
+.allocation tfoot td, .allocation tfoot th { font-weight: 600; }
+
 .weekday-counts { margin-top: 1.5rem; }
 .weekday-counts table { border-collapse: collapse; width: 100%; max-width: 640px; font-size: 0.95rem; }
 .weekday-counts th, .weekday-counts td { text-align: left; padding: 4px 10px 4px 0; border-bottom: 1px solid var(--grid); }

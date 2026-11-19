@@ -3,10 +3,8 @@
 import { memo } from "react";
 
 const W = 1000;
-const H = 460;
 const M = { top: 20, right: 20, bottom: 70, left: 60 };
 const PW = W - M.left - M.right;
-const PH = H - M.top - M.bottom;
 const ROWS_PER_WEEK = 100; // 5 weekdays x 20 slots
 
 function niceStep(max) {
@@ -16,8 +14,19 @@ function niceStep(max) {
   return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * p;
 }
 
-// Population dots never change, so draw them once (memo) for speed.
-const PopulationDots = memo(function PopulationDots({ rows, target, x, y }) {
+function scales(N, yMax, H) {
+  const PH = H - M.top - M.bottom;
+  return {
+    PH,
+    x: (i) => M.left + ((i + 0.5) / N) * PW,
+    y: (v) => M.top + PH - (v / yMax) * PH,
+  };
+}
+
+// The 10,000 population dots never change for a given chart size, so they are drawn once
+// and not redrawn when n or the seed changes (props here are stable values).
+const PopulationDots = memo(function PopulationDots({ rows, target, yMax, H }) {
+  const { x, y } = scales(rows.length, yMax, H);
   return (
     <g className="pop-dots">
       {rows.map((r, i) => (
@@ -27,14 +36,23 @@ const PopulationDots = memo(function PopulationDots({ rows, target, x, y }) {
   );
 });
 
-export default function TimelineChart({ rows, target, targetLabel, sampleIdx, truthMean, estimate, n }) {
+export default function TimelineChart({
+  rows,
+  target,
+  targetLabel,
+  sampleIdx,
+  truthMean,
+  estimate,
+  estimateLabel,
+  height = 460,
+}) {
+  const H = height;
   const N = rows.length;
-  const maxVal = Math.max(...rows.map((r) => r[target]));
+  let maxVal = 0;
+  for (const r of rows) if (r[target] > maxVal) maxVal = r[target];
   const step = niceStep(maxVal);
   const yMax = Math.ceil(maxVal / step) * step;
-
-  const x = (i) => M.left + ((i + 0.5) / N) * PW;
-  const y = (v) => M.top + PH - (v / yMax) * PH;
+  const { PH, x, y } = scales(N, yMax, H);
 
   const yTicks = [];
   for (let v = 0; v <= yMax; v += step) yTicks.push(v);
@@ -42,8 +60,9 @@ export default function TimelineChart({ rows, target, targetLabel, sampleIdx, tr
     (w) => (w - 1) * ROWS_PER_WEEK < N
   );
 
+  const hasEstimate = estimate !== null && estimate !== undefined;
   const yTrue = y(truthMean);
-  const yEst = y(estimate);
+  const yEst = hasEstimate ? y(estimate) : null;
   const rugY = M.top + PH + 4;
 
   return (
@@ -51,7 +70,7 @@ export default function TimelineChart({ rows, target, targetLabel, sampleIdx, tr
       viewBox={`0 0 ${W} ${H}`}
       className="timeline"
       role="img"
-      aria-label={`Scatter of all ${N} appointments in time order against ${targetLabel}, with ${n} sampled appointments highlighted`}
+      aria-label={`Scatter of all ${N} appointments in time order against ${targetLabel}, with ${sampleIdx.length} sampled appointments highlighted`}
     >
       {/* gridlines + y axis */}
       {yTicks.map((v) => (
@@ -88,7 +107,7 @@ export default function TimelineChart({ rows, target, targetLabel, sampleIdx, tr
       </text>
 
       {/* full population */}
-      <PopulationDots rows={rows} target={target} x={x} y={y} />
+      <PopulationDots rows={rows} target={target} yMax={yMax} H={H} />
 
       {/* sampled rows: markers + rug ticks under the axis */}
       <g className="sample-rug">
@@ -104,22 +123,26 @@ export default function TimelineChart({ rows, target, targetLabel, sampleIdx, tr
 
       {/* labelled reference lines */}
       <line className="true-mean" x1={M.left} x2={M.left + PW} y1={yTrue} y2={yTrue} />
-      <line className="estimate" x1={M.left} x2={M.left + PW} y1={yEst} y2={yEst} />
       <text
         className="line-label true-mean-label"
         x={M.left + 6}
-        y={yTrue < yEst ? yTrue - 6 : yTrue + 14}
+        y={hasEstimate && yTrue >= yEst ? yTrue + 14 : yTrue - 6}
       >
         True population mean (all {N.toLocaleString("en-US")}): {truthMean.toFixed(2)}
       </text>
-      <text
-        className="line-label estimate-label"
-        x={M.left + PW - 6}
-        y={yEst <= yTrue ? yEst - 6 : yEst + 14}
-        textAnchor="end"
-      >
-        Single-sample estimate (n = {n}): {estimate.toFixed(2)}
-      </text>
+      {hasEstimate && (
+        <>
+          <line className="estimate" x1={M.left} x2={M.left + PW} y1={yEst} y2={yEst} />
+          <text
+            className="line-label estimate-label"
+            x={M.left + PW - 6}
+            y={yEst <= yTrue ? yEst - 6 : yEst + 14}
+            textAnchor="end"
+          >
+            {estimateLabel}: {estimate.toFixed(2)}
+          </text>
+        </>
+      )}
     </svg>
   );
 }
