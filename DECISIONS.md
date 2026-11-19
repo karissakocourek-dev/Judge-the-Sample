@@ -38,7 +38,7 @@ When n is below 20: The app merges the 20 slots into 4 groups of 5 slots (slots 
 
 When n is below 4: Stratified sampling is blocked with an explanation, and simple random and systematic still run. There are 4 groups and each needs at least one row, so n = 1, 2, and 3 can’t work. I chose to block it because making stratified work at that size would make the app harder for new users to follow.
 - Stage 4, presentation of the method comparison and sample-size experiments: I chose histogram small multiples, with one histogram per result on the same x-axis, because it gives the user a simpler visualization. Results recalculate automatically when the seed or repetition count changes, to minimize confusion and make the app more user friendly. The repetition control has two fixed choices, 100 or 1,000, because two fixed choices keep the control simple and mean less to test.
-- Stage 5, challenge controls and my alternative method or correction:
+- Stage 5, challenge controls and my alternative method or correction: I chose Option 1, an Experiment C block added below Experiments A and B, with a shuffle-seed control. It shows four labelled histograms and a table: simple random and systematic, each on the baseline and the shuffled population, at n = 100 and each judged against its own true mean. I chose it to stay consistent with the design that is already built, and because histograms are a simple visualization that is easy to understand and interpret. My alternative method is systematic sampling at the same total n, because its selection rule depends on row position.
 
 ## 3. Results table
 
@@ -72,15 +72,15 @@ rows use the same n; a challenge baseline row may repeat a matching stage 4 resu
 
 ## 5. Challenge (hypothesis written independently, before consulting my agent)
 
-Hypothesis, written before I consult my agent:
+Hypothesis, written before I consult my agent: Shuffling the row order will not change how reliable simple random sampling is on the clinic population, but it will change how reliable systematic sampling is.
 
-- Date written:
-- Method I chose to challenge:
-- The change to the population or its ordering:
-- Why the selection rule would interact with that change:
-- Evidence I expect across repeated samples:
-- Alternative method or correction I will compare, and why:
-- Evidence that would contradict my hypothesis:
+- Date written: 11/18/2026
+- Method I chose to challenge: simple random
+- The change to the population or its ordering: Row order only. I will shuffle the rows of a labelled copy of the data and leave the values and the number of appointments unchanged.
+- Why the selection rule would interact with that change: Simple random sampling picks rows without looking at their position, so it does not see row order, and a shuffle should not matter to it. Systematic sampling picks rows by position, so it does see the order, and in the original file its interval of 100 lines up with the 100 appointments in a week.
+- Evidence I expect across repeated samples: The true mean stays at 22.684, because reordering does not change the mean. For simple random, I expect the estimates to stay centered on the true mean with an SD close to the baseline value of 1.450. For systematic, I expect the SD to fall well below its baseline of 6.957, to something close to the simple random SD.
+- Alternative method or correction I will compare, and why: Systematic sampling at the same total n of 100, because it is the method whose selection rule depends on row order.
+- Evidence that would contradict my hypothesis: If the simple random SD or bias changes by more than the variation I see across several seeds, or if the systematic SD stays near its baseline of 6.957 after the shuffle.
 
 After I test it:
 
