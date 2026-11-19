@@ -5,9 +5,9 @@ App link (optional):
 
 **Central question:** Which sampling method would you trust for this population, at what sample size, and with what limits?
 
-- **Scenario:** <!-- clinic waiting times / healthcare costs / wearable heart rate -->
-- **Data file:** `data/<!-- file name -->` (source, licence and provenance in `data/README.md`)
-- **Seed(s) used for my evidence** (exact enumeration needs no seed):
+- **Scenario:** Clinic Waiting Times
+- **Data file:** clinic_visits.csv, the simulated clinic visits file from the Judge the Sample starter kit, with 10,000 appointments.
+- **Seed(s) used for my evidence:** experiment seed 12345 for all Monte Carlo results, with seed 7 also tested. Shuffle seeds 1, 2, and 3 for the shuffled copy, with seed 1 used in the results table. Systematic sampling at n = 100 uses exact enumeration over all 100 starts, so it has no seed.
 
 ## Run it on your computer
 

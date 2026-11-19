@@ -94,5 +94,5 @@ Seeds and repetitions: experiment seeds 12345 and 7, with 100 repetitions and, f
 ## 6. AI use
 
 - Tools used:
-- What I asked my agent to do, and what I checked myself:
-- Automated checks my agent reported (I did not let it interpret my results):
+- What I asked my agent to do, and what I checked myself: I used Claude Code to build the app in stages. It built the first display with a temporary sample, then the three sampling methods, then the repeated-sampling experiments, then the Experiment C challenge block. Automated checks it reported: all passed at each stage, including that each sample had exactly n distinct rows, that the same seed gave the same numbers, that allocations summed to n and weights summed to 1, that the weighted estimator matched a hand calculation, that RMSE squared equals bias squared plus SD squared, and that the data file on disk was unchanged. I ran the app after each stage, tested n = 1, 3, 7, 10, and 100, predicted the systematic rows and confirmed them, checked the weights and allocations by hand, checked RMSE squared against bias squared plus SD squared on one result, tested several seeds and 1,000 repetitions, and confirmed that the baseline results reproduced. I used Claude in chat to explain each step and the terms.
+- Automated checks my agent reported (I did not let it interpret my results): I wrote a first draft of the hypothesis myself, and the final version came from Claude’s feedback and draft, which I edited.
