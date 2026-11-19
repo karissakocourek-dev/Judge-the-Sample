@@ -24,6 +24,11 @@ describe("app renders", () => {
       "100 repetitions",
       "same result as Experiment A",
       "100 repetitions usually reveal the main pattern",
+      "Experiment C: challenge, baseline vs modified population (rows shuffled)",
+      "Shuffle seed (modified copy)",
+      "modified: rows shuffled (shuffle seed 1)",
+      "modified copy&#x27;s row order (shuffled, not time order)",
+      "True mean, recalculated from each population&#x27;s own rows",
     ]) {
       expect(html).toContain(text);
     }

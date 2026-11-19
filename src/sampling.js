@@ -22,6 +22,21 @@ export function trueMean(rows, key) {
   return sum / rows.length;
 }
 
+// ---------- Modified populations (stage 5) ----------
+
+// Modified copy with ROW ORDER ONLY changed: a seeded full Fisher–Yates shuffle of a NEW
+// array holding the same row objects. Values, membership and N are unchanged; the input
+// array is never mutated, so the baseline stays exactly as loaded from the file.
+export function shuffledCopy(rows, seed) {
+  const rng = makeRng(seed);
+  const out = rows.slice();
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
 // Simple random sampling WITHOUT replacement: n distinct row indices (0-based)
 // out of N, every set of n rows equally likely (partial Fisher–Yates shuffle).
 // Returned in ascending (file / time) order.

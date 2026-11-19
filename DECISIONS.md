@@ -56,10 +56,10 @@ value for modified rows). Keep each result in its own row: never pool estimates.
 | Methods at n = 100 | baseline | Stratified | by slot, 20 strata, proportional allocation, seeded ties | 12345 | 100 | 100 repetitions | Monte Carlo | 22.684 | -0.210 | 1.334 | 1.351 |
 | Sample size | baseline | Simple random | without replacement | 12345 | 1 | 100 repetitions | Monte Carlo | 22.684 | 2.226 | 12.820 | 13.012 |
 | Sample size | baseline | Simple random | without replacement | 12345 | 10 | 100 repetitions | Monte Carlo | 22.684 | -0.035 | 4.353 | 4.353 |
-| Challenge | baseline | (method I challenged) | | | | | | | | | |
-| Challenge | modified | (method I challenged) | | | | | | | | | |
-| Challenge | baseline | (alternative or correction) | | | | | | | | | |
-| Challenge | modified | (alternative or correction) | | | | | | | | | |
+| Challenge | baseline | Simple random | without replacement | 12345 | 100 | 100 repetitions | Monte Carlo | 22.684 | -0.030 | 1.450 | 1.450 |
+| Challenge | modified | Simple random | rows shuffled, shuffle seed 1 | 12345 | 100 | 100 repetitions | Monte Carlo | 22.684 | 0.151 | 1.555 | 1.562 |
+| Challenge | baseline | Systematic | file order, whole-number interval k = 100 | exact | 100 | 100 starts | exact | 22.684 | 0.000 | 6.957 | 6.957 |
+| Challenge | modified | Systematic | rows shuffled, shuffle seed 1, k = 100 | exact | 100 | 100 starts | exact | 22.684 | 0.000 | 1.619 | 1.619 |
 
 The simple random n = 100 row is also the n = 100 sample-size result when the population and
 settings match. If I reran it with different settings, I add a separate row. All four challenge
