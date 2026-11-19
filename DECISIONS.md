@@ -37,7 +37,7 @@ Tie-break rule: When n is not a multiple of 20, the extra rows go to slots chose
 When n is below 20: The app merges the 20 slots into 4 groups of 5 slots (slots 1 to 5, 6 to 10, 11 to 15, and 16 to 20, with 2,500 rows each). I chose this because I want every method to run at every n, and this still allows me to test n = 10 and n = 100.
 
 When n is below 4: Stratified sampling is blocked with an explanation, and simple random and systematic still run. There are 4 groups and each needs at least one row, so n = 1, 2, and 3 can’t work. I chose to block it because making stratified work at that size would make the app harder for new users to follow.
-- Stage 4, presentation of the method comparison and sample-size experiments:
+- Stage 4, presentation of the method comparison and sample-size experiments: I chose histogram small multiples, with one histogram per result on the same x-axis, because it gives the user a simpler visualization. Results recalculate automatically when the seed or repetition count changes, to minimize confusion and make the app more user friendly. The repetition control has two fixed choices, 100 or 1,000, because two fixed choices keep the control simple and mean less to test.
 - Stage 5, challenge controls and my alternative method or correction:
 
 ## 3. Results table
